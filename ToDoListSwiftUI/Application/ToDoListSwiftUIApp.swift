@@ -17,6 +17,8 @@ struct ToDoListSwiftUIApp: App {
             NavigationView {
                 ListView()
             }
+            // for the adaptivity for iPads
+            .navigationViewStyle(StackNavigationViewStyle())
             .environmentObject(listViewModel)
         }
     }

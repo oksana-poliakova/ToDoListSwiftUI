@@ -12,8 +12,8 @@ struct NoItemsView: View {
     // MARK: - Properties
     
     @State var animate: Bool = false
-    let accentColor = Color("AccentColor")
-    let secondaryAccentColor = Color("SecondaryAccentColor")
+    let mainColor = Color("mainColor")
+    let secondaryColor = Color("secondaryColor")
     
     // MARK: - Body
     
@@ -32,19 +32,20 @@ struct NoItemsView: View {
                         .font(.headline)
                         .frame(height: 55)
                         .frame(maxWidth: .infinity)
-                        .background(animate ? secondaryAccentColor : accentColor)
+                        .background(animate ? secondaryColor : mainColor)
                         .cornerRadius(10)
                 })
                 .padding(.horizontal, animate ? 30 : 50)
                 .shadow(
-                    color: animate ? secondaryAccentColor.opacity(0.7) :
-                        accentColor.opacity(0.7),
+                    color: animate ? secondaryColor.opacity(0.7) :
+                        mainColor.opacity(0.7),
                     radius: animate ? 10 : 10,
                     x: 0,
                     y: animate ? 50 : 30)
                 .scaleEffect(animate ? 1.1 : 1.0)
                 .offset(y: animate ? -7 : 0)
             }
+            .frame(maxWidth: 400)
             .padding(40 )
             .multilineTextAlignment(.center)
             .onAppear(perform: addAnimation)

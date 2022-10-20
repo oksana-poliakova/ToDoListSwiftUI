@@ -11,19 +11,22 @@ struct ListView: View {
     
     // MARK: - Properties
     
-    @State var items: [ItemModel] = [
-        ItemModel(title: "First item", isCompleted: false),
-        ItemModel(title: "Second item", isCompleted: true),
-        ItemModel(title: "Third item", isCompleted: false)
-    ]
+    @EnvironmentObject var listViewModel: ListViewModel
     
     // MARK: - Body
     
     var body: some View {
         List {
-            ForEach(items) { item in
+            ForEach(listViewModel.items ) { item in
                 ListRowView(item: item)
+                    .onTapGesture {
+                        withAnimation(.linear) {
+                            listViewModel.updateItem(item: item)
+                        }
+                    }
             }
+            .onDelete(perform: listViewModel.deleteItem)
+            .onMove(perform: listViewModel.moveItem)
         }
         .listStyle(.plain)
         .navigationTitle("ToDo List 📝")
@@ -40,6 +43,7 @@ struct ListView_Previews: PreviewProvider {
         NavigationView {
             ListView()
         }
+        .environmentObject(ListViewModel())
     }
 }
 

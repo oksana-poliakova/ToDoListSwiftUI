@@ -11,7 +11,13 @@ struct ListRowView: View {
     
     // MARK: - Properties
     
-    let item: ItemModel
+    private let item: ItemModel
+    
+    // MARK: - Init
+    
+    init(item: ItemModel) {
+        self.item = item
+    }
     
     // MARK: - Body
     

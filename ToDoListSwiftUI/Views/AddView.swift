@@ -11,7 +11,12 @@ struct AddView: View {
     
     // MARK: - Properties
     
-    @State var textFieldText: String = ""
+    @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var listViewModel: ListViewModel
+    
+    @State private var textFieldText: String = ""
+    @State private var alertTitle: String = ""
+    @State private var showAlert: Bool = false
     
     // MARK: - Body
     
@@ -24,9 +29,7 @@ struct AddView: View {
                     .background(Color("lightGray"))
                     .cornerRadius(8)
                 
-                Button(action: {
-                    
-                }, label: {
+                Button(action: saveButtonPressed, label: {
                     Text("Save".uppercased())
                         .foregroundColor(.white)
                         .frame(height: 55)
@@ -39,6 +42,27 @@ struct AddView: View {
             .padding(14)
         }
         .navigationTitle("Add an Item 🖊")
+        .alert(isPresented: $showAlert, content: getAlert)
+    }
+    
+    func saveButtonPressed() {
+        if textIsAppropriate() {
+            listViewModel.addItem(title: textFieldText)
+            presentationMode.wrappedValue.dismiss()
+        }
+    }
+    
+    func textIsAppropriate() -> Bool {
+        if textFieldText.count < 3 {
+            alertTitle = "Your new todo item must be at least 3 characters long 🙂 "
+            showAlert.toggle()
+            return false
+        }
+        return true
+    }
+    
+    func getAlert() -> Alert {
+        return Alert(title: Text(alertTitle ))
     }
 }
 
@@ -47,5 +71,6 @@ struct AddView_Previews: PreviewProvider {
         NavigationView {
             AddView()
         }
+        .environmentObject(ListViewModel())
     }
 }
